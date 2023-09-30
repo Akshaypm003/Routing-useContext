@@ -1,25 +1,32 @@
-import React from "react";
-// import Counter from "./Counter";
-import { useState } from "react";
-import axios from "axios";
+import React, { Fragment, useState } from "react";
+import {Route, Link, Routes, useNavigate} from 'react-router-dom'
+import Profile from "./container/Profile";
+import About from "./container/About";
+import { AppContext } from "./Context";
+
 
 function App() {
-  const [state,setState] = useState([])
-   
+
+  const navigate= useNavigate()
+  const [first, setfirst] = useState(30)
+ 
   return (
-    <div>
-      <button onClick={()=>{
-        axios.get('https://jsonplaceholder.typicode.com/posts').then(res=>setState(res.data))
-      }}>click</button>
-      { state.map((obj,i)=>{
-          return(
-            <div>
-            <h3><span>{i+1}. </span>{obj.title}</h3>
-            <p>{obj.body}</p>
-            </div>
-          )
-        })}
-    </div>
+      <Fragment>
+        
+        <Link to='/About'>About page</Link> <br />
+        <Link to='/Profile'>Profile page</Link> 
+
+        <button onClick={()=>navigate('/About')}> About</button>
+        <button onClick={()=>navigate('/Profile')}>Profile</button>
+
+        <AppContext.Provider value={{data:first}}>   
+          <Routes>
+            <Route Component={About} path="/About"></Route>
+            <Route Component={Profile} path="/Profile"></Route> 
+          </Routes>
+        </AppContext.Provider>
+        
+      </Fragment>
   );
 }
 
